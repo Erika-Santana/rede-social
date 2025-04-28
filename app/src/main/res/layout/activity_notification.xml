@@ -9,7 +9,7 @@
     tools:context=".ui.notificacoes.NotificationActivity">
 
     <TextView
-        android:id="@+id/text_notification"
+        android:id="@+id/title_notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -35,7 +35,7 @@
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_notification" />
+        app:layout_constraintTop_toBottomOf="@+id/title_notification" />
 
     <TextView
         android:id="@+id/text_content_notification"
