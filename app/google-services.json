@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1065407964972",
+    "project_id": "rede-social-adbdc",
+    "storage_bucket": "rede-social-adbdc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065407964972:android:2765ecc6c0bb6c6ddcee89",
+        "android_client_info": {
+          "package_name": "android.rede_social"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALiBkCv7koFjbVNpZZiHWAVfK_s-KJhhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065407964972:android:225b223860592e18dcee89",
+        "android_client_info": {
+          "package_name": "br.edu.ifsp.dmo1.redesocial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALiBkCv7koFjbVNpZZiHWAVfK_s-KJhhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
