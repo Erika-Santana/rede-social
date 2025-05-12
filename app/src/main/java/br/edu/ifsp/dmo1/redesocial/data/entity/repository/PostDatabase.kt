@@ -16,19 +16,18 @@ class PostDatabase {
 
     var lastDocument :DocumentSnapshot? = null
 
-    fun getAllPosts(){
+    fun getAllPosts() {
 
         val db = Firebase.firestore
 
         if (lastDocument != null){
             getAllLimit()
-        }
-
-        db.collection("posts")
-            .limit(5)
-            .orderBy("cidade", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener {  task ->
+        }else{
+            db.collection("posts")
+                .limit(5)
+                .orderBy("cidade", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener { task ->
                     val documents = task
                     val novosPosts = mutableListOf<Post>()
 
@@ -42,24 +41,24 @@ class PostDatabase {
                         val post = Post(descricao, bitmap, local)
                         novosPosts.add(post)
                     }
-                    lastDocument = documents.documents.last()
+                    lastDocument = documents.documents.lastOrNull()
                     newPosts = novosPosts
                     Log.v("Lista: ", newPosts.toString())
                 }
+        }
+
 
 
     }
 
-    fun getAllLimit(){
-
+    fun getAllLimit() {
         val db = Firebase.firestore
         db.collection("posts")
-            .limit(5)
-
             .orderBy("cidade", Query.Direction.DESCENDING)
-            .startAfter(lastDocument)
+            .startAfter(lastDocument ?: return)
+            .limit(5)
             .get()
-            .addOnSuccessListener {  task ->
+            .addOnSuccessListener { task ->
                 val documents = task
                 val novosPosts = mutableListOf<Post>()
 
@@ -73,13 +72,15 @@ class PostDatabase {
                     val post = Post(descricao, bitmap, local)
                     novosPosts.add(post)
                 }
-                lastDocument = documents.documents.last()
-                newPosts = novosPosts
-                Log.v("Lista: ", newPosts.toString())
+
+                if (documents.documents.isNotEmpty()) {
+                    lastDocument = documents.documents.last()
+                    newPosts.addAll(novosPosts)
+                    Log.v("Lista paginada: ", newPosts.toString())
+                }
             }
-
-
     }
+
 
      fun findByCity(city: String) {
 

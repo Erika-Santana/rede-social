@@ -33,15 +33,11 @@ class PostAdapter(private val posts: MutableList<Post>) :
         holder.txtCidade.text = posts[position].getCidade()
     }
 
-    fun updatePosts(newPosts: List<Post>) {
-        posts.clear()
-        posts.addAll(newPosts)
+
+    fun updatePostsLimit(posts: List<Post>) {
+        this.posts.clear()
+        this.posts.addAll(posts)
         notifyDataSetChanged()
     }
 
-    fun updatePostsLimit(newPosts: List<Post>) {
-        var startPosition = newPosts.size
-        posts.addAll(newPosts)
-        notifyItemRangeInserted(startPosition, newPosts.size)
-    }
 }

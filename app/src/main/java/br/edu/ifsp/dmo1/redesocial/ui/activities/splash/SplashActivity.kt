@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
         //Activities. Diferente do Handler de antigamente, quando essa acitivity é cancelada antes de acabar
         //o tempo de delay, É destruida automaticamente. Dessa forma, evita erros.
         lifecycleScope.launch {
-            delay(3000) // Espera 2 segundos
+            delay(3000)
             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             finish()
         }

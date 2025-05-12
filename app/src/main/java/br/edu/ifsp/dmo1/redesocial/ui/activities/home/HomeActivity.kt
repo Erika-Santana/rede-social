@@ -1,7 +1,6 @@
 package br.edu.ifsp.dmo1.redesocial.ui.activities.home
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.dmo1.redesocial.data.entity.Post
@@ -31,8 +30,9 @@ class HomeActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         repository = PostDatabase()
-        repository.getAllPosts()
+
         configAdapter()
+        repository.getAllPosts()
         reloadPosts(repository.newPosts)
         reloadInfos()
         setOnClickListener()
@@ -81,9 +81,8 @@ class HomeActivity : AppCompatActivity() {
             finish()
         }
         viewBinding.button.setOnClickListener {
-                Toast.makeText(this, "Entrou get All", Toast.LENGTH_SHORT).show()
-                repository.getAllPosts()
-                reloadPosts(repository.newPosts)
+            repository.getAllPosts()
+            reloadPosts(repository.newPosts)
         }
 
         viewBinding.criarPost.setOnClickListener {

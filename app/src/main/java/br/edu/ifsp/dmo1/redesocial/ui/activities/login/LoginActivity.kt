@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
             val password = viewBinding.password.text.toString()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Insira os valores!", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Insira os valores!", Toast.LENGTH_SHORT).show()
             }else{
                 firebaseAuth
                     .signInWithEmailAndPassword(email, password)
