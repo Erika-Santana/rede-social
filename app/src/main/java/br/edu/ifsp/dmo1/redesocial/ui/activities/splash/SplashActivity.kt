@@ -1,4 +1,4 @@
-package br.edu.ifsp.dmo1.redesocial.ui.splash
+package br.edu.ifsp.dmo1.redesocial.ui.activities.splash
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import br.edu.ifsp.dmo1.redesocial.R
-import br.edu.ifsp.dmo1.redesocial.ui.home.HomeActivity
-import br.edu.ifsp.dmo1.redesocial.ui.login.LoginActivity
+import br.edu.ifsp.dmo1.redesocial.ui.activities.home.HomeActivity
+import br.edu.ifsp.dmo1.redesocial.ui.activities.login.LoginActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

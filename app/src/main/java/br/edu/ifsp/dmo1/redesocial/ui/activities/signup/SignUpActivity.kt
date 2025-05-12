@@ -1,4 +1,4 @@
-package br.edu.ifsp.dmo1.redesocial.ui.signup
+package br.edu.ifsp.dmo1.redesocial.ui.activities.signup
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,8 +12,8 @@ import androidx.core.view.WindowInsetsCompat
 import br.edu.ifsp.dmo1.redesocial.R
 import br.edu.ifsp.dmo1.redesocial.databinding.ActivityLoginBinding
 import br.edu.ifsp.dmo1.redesocial.databinding.ActivitySignUpBinding
-import br.edu.ifsp.dmo1.redesocial.ui.home.HomeActivity
-import br.edu.ifsp.dmo1.redesocial.ui.profile.ProfileActivity
+import br.edu.ifsp.dmo1.redesocial.ui.activities.home.HomeActivity
+import br.edu.ifsp.dmo1.redesocial.ui.activities.profile.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SignUpActivity : AppCompatActivity() {
@@ -25,14 +25,7 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
-
-
         setListerners()
-        observerEyeIcon()//hmmmm
-    }
-
-    private fun observerEyeIcon() {
-        //Implementar depois
     }
 
     private fun setListerners() {
