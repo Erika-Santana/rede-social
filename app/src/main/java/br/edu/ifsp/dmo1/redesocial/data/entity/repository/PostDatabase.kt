@@ -1,64 +1,112 @@
 package br.edu.ifsp.dmo1.redesocial.data.entity.repository
+
+
+import android.util.Log
 import br.edu.ifsp.dmo1.redesocial.data.entity.Post
 import br.edu.ifsp.dmo1.redesocial.ui.picture_code.Base64Converter
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+
 
 class PostDatabase {
 
-    fun getAllPosts(callback: CallbackPost){
+    var newPosts = mutableListOf<Post>()
 
-        val newPosts = mutableListOf<Post>()
+    var lastDocument :DocumentSnapshot? = null
+
+    fun getAllPosts(){
 
         val db = Firebase.firestore
-        db.collection("posts").get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val documents = task.result
+
+        if (lastDocument != null){
+            getAllLimit()
+        }
+
+        db.collection("posts")
+            .limit(5)
+            .orderBy("cidade", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener {  task ->
+                    val documents = task
+                    val novosPosts = mutableListOf<Post>()
+
                     for (document in documents.documents) {
                         val imageString = document.data?.get("fotoPostString").toString()
                         val bitmap = Base64Converter.stringToBitmap(imageString)
                         val descricao = document.data?.get("textoPost").toString()
-                        var local =  document.data?.get("cidade").toString()
-                        if (local.isEmpty() || !(local == "")){
-                            local + ", " + document.data?.get("estado") +", "+ document.data?.get("pais")
-                        }else{
-                            local = ""
-                        }
+                        var local = document.data?.get("cidade").toString()
+                        local += " " + document.data?.get("estado") + " " + document.data?.get("pais")
 
-                        newPosts.add(Post(descricao, bitmap, local))
+                        val post = Post(descricao, bitmap, local)
+                        novosPosts.add(post)
                     }
+                    lastDocument = documents.documents.last()
+                    newPosts = novosPosts
+                    Log.v("Lista: ", newPosts.toString())
                 }
-                callback.callbackAll(newPosts)
-            }
+
 
     }
 
-    fun findByCity(city: String, callback: CallbackPost){
+    fun getAllLimit(){
 
-         val newPosts = mutableListOf<Post>()
+        val db = Firebase.firestore
+        db.collection("posts")
+            .limit(5)
+
+            .orderBy("cidade", Query.Direction.DESCENDING)
+            .startAfter(lastDocument)
+            .get()
+            .addOnSuccessListener {  task ->
+                val documents = task
+                val novosPosts = mutableListOf<Post>()
+
+                for (document in documents.documents) {
+                    val imageString = document.data?.get("fotoPostString").toString()
+                    val bitmap = Base64Converter.stringToBitmap(imageString)
+                    val descricao = document.data?.get("textoPost").toString()
+                    var local = document.data?.get("cidade").toString()
+                    local += " " + document.data?.get("estado") + " " + document.data?.get("pais")
+
+                    val post = Post(descricao, bitmap, local)
+                    novosPosts.add(post)
+                }
+                lastDocument = documents.documents.last()
+                newPosts = novosPosts
+                Log.v("Lista: ", newPosts.toString())
+            }
+
+
+    }
+
+     fun findByCity(city: String) {
 
          val db = Firebase.firestore
-         db.collection("posts").get()
+
+         db.collection("posts")
+             .whereEqualTo("cidade", city)
+             .get()
              .addOnCompleteListener { task ->
                  if (task.isSuccessful) {
                      val documents = task.result
+                     val novosPosts = mutableListOf<Post>()
+
                      for (document in documents.documents) {
-                         val getCity = document.getString("cidade") ?: ""
-                         if (getCity.equals(city, ignoreCase = true)) {
-                             val imageString = document.data?.get("fotoPostString").toString()
-                             val bitmap = Base64Converter.stringToBitmap(imageString)
-                             val descricao = document.data?.get("textoPost").toString()
-                             val local =  document.data?.get("cidade").toString()
+                         val imageString = document.data?.get("fotoPostString").toString()
+                         val bitmap = Base64Converter.stringToBitmap(imageString)
+                         val descricao = document.data?.get("textoPost").toString()
+                         var local = document.data?.get("cidade").toString()
+                         local += " " + document.data?.get("estado") + " " + document.data?.get("pais")
 
-                                 local + ", " + document.data?.get("estado") +", "+ document.data?.get("pais")
-
-                             newPosts.add(Post(descricao, bitmap, local))
-                         }
+                         novosPosts.add(Post(descricao, bitmap, local))
                      }
-                     callback.callbackByCity(newPosts)
+
+                    newPosts = novosPosts
+
                  }
              }
-
      }
+
 }

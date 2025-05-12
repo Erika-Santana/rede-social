@@ -38,4 +38,10 @@ class PostAdapter(private val posts: MutableList<Post>) :
         posts.addAll(newPosts)
         notifyDataSetChanged()
     }
+
+    fun updatePostsLimit(newPosts: List<Post>) {
+        var startPosition = newPosts.size
+        posts.addAll(newPosts)
+        notifyItemRangeInserted(startPosition, newPosts.size)
+    }
 }

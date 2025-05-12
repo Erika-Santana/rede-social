@@ -38,7 +38,6 @@ class ProfileActivity : AppCompatActivity() {
         } else {
             createProfile()
         }
-
     }
 
     private fun updateProfile() {

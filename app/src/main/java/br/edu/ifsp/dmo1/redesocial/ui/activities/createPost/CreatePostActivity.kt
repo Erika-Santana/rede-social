@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import br.edu.ifsp.dmo1.redesocial.databinding.ActivityCreatePostBinding
 import br.edu.ifsp.dmo1.redesocial.ui.activities.home.HomeActivity
-import br.edu.ifsp.dmo1.redesocial.ui.activities.location.LocalizacaoHelper
+import br.edu.ifsp.dmo1.redesocial.data.entity.repository.location.LocalizacaoHelper
 import br.edu.ifsp.dmo1.redesocial.ui.picture_code.Base64Converter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth

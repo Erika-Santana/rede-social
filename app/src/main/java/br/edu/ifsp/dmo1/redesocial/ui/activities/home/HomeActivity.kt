@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.dmo1.redesocial.data.entity.Post
-import br.edu.ifsp.dmo1.redesocial.data.entity.repository.CallbackPost
 import br.edu.ifsp.dmo1.redesocial.data.entity.repository.PostDatabase
 import br.edu.ifsp.dmo1.redesocial.databinding.ActivityHomeBinding
 import br.edu.ifsp.dmo1.redesocial.ui.activities.createPost.CreatePostActivity
@@ -18,7 +17,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
-class HomeActivity : AppCompatActivity(), CallbackPost {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var viewBinding: ActivityHomeBinding
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -31,9 +30,10 @@ class HomeActivity : AppCompatActivity(), CallbackPost {
         viewBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        configAdapter()
         repository = PostDatabase()
-        repository.getAllPosts(this)
+        repository.getAllPosts()
+        configAdapter()
+        reloadPosts(repository.newPosts)
         reloadInfos()
         setOnClickListener()
     }
@@ -46,7 +46,6 @@ class HomeActivity : AppCompatActivity(), CallbackPost {
         viewBinding.recyclerView.adapter = adapter
 
     }
-
 
     private fun reloadInfos() {
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -70,76 +69,42 @@ class HomeActivity : AppCompatActivity(), CallbackPost {
             }
     }
 
-    private fun reloadPosts(posts: List<Post>){
-        adapter.updatePosts(posts)
+    private fun reloadPosts(posts: List<Post>) {
+        adapter.updatePostsLimit(posts)
     }
 
     private fun setOnClickListener() {
+
         viewBinding.sair.setOnClickListener {
             firebaseAuth.signOut()
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
         viewBinding.button.setOnClickListener {
-            val db = Firebase.firestore
-            db.collection("posts").get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val documents = task.result
-                        val newPosts = mutableListOf<Post>()
-
-                        for (document in documents.documents) {
-                            val imageString = document.data?.get("fotoPostString").toString()
-                            val bitmap = Base64Converter.stringToBitmap(imageString)
-                            val descricao = document.data?.get("textoPost").toString()
-                            var local =  document.data?.get("cidade").toString()
-                                local +=  " " + document.data?.get("estado") +" "+ document.data?.get("pais")
-
-
-                            newPosts.add(Post(descricao, bitmap, local))
-                        }
-
-                        reloadPosts(newPosts)
-                    } else {
-                        Toast.makeText(this, "Erro ao carregar posts", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                Toast.makeText(this, "Entrou get All", Toast.LENGTH_SHORT).show()
+                repository.getAllPosts()
+                reloadPosts(repository.newPosts)
         }
 
         viewBinding.criarPost.setOnClickListener {
             startActivity(Intent(this, CreatePostActivity::class.java))
         }
 
-        viewBinding.editPerfil.setOnClickListener{
+        viewBinding.editPerfil.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             intent.putExtra("editar", true)
             startActivity(intent)
         }
 
-        viewBinding.buttonPesquisar.setOnClickListener{
+        viewBinding.buttonPesquisar.setOnClickListener {
             val city = viewBinding.editSearch.text.toString()
             if (!city.isEmpty() || !city.isBlank()) {
-                repository.findByCity(city, this)
-            }else{
-                repository.getAllPosts(this)
+                repository.findByCity(city)
+                reloadPosts(repository.newPosts)
+
             }
+
         }
-
     }
-
-    override fun callbackAll(posts: List<Post>) {
-        if (posts.isEmpty()){
-            Toast.makeText(this, "Nenhum resultado encontrado!", Toast.LENGTH_SHORT).show()
-        }
-       reloadPosts(posts)
-    }
-
-    override fun callbackByCity(posts: List<Post>) {
-        if (posts.isEmpty()){
-            Toast.makeText(this, "Nenhum resultado encontrado!", Toast.LENGTH_SHORT).show()
-        }
-        reloadPosts(posts)
-    }
-
-
 }
+

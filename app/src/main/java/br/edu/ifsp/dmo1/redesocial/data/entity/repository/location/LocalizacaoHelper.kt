@@ -1,4 +1,4 @@
-package br.edu.ifsp.dmo1.redesocial.ui.activities.location
+package br.edu.ifsp.dmo1.redesocial.data.entity.repository.location
 
 import android.Manifest
 import android.content.Context
@@ -40,7 +40,6 @@ class LocalizacaoHelper(
                     val lat = location.latitude
                     val lon = location.longitude
                     obterEndereco(lat, lon, callback)
-                    //callback.onLocalizacaoRecebida(lat, lon)
                 } else {
                     callback.onErro("Localização indisponível")
                 }
